@@ -34,6 +34,27 @@ def sql(telegram_id, surname, name, patronymic, post, module1=0, module2=0, modu
 def sqlcheck():
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
-    sql = "SELECT * FROM user"
+    sql = "SELECT * FROM users"
     cursor.execute(sql)
     print(cursor.fetchall())
+
+
+def delete(id):
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+    sql = f"DELETE FROM users WHERE telegram_id = '{id}' "
+    cursor.execute(sql)
+    print("Все удалено!")
+    conn.commit()
+
+
+def check_profile(id):
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+    sql = f"SELECT * FROM users WHERE telegram_id = '{id}'"
+    cursor.execute(sql)
+    answer = cursor.fetchone()
+    print("OK")
+    return answer
+
+

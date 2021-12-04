@@ -18,10 +18,30 @@ def welcome_start(message):
 def check_db(message):
     sqlcheck()
 
+
+@bot.message_handler(commands=['del'])
+def delete_table(message):
+    global telegram_id
+    telegram_id = message.from_user.id
+    delete(telegram_id)
+
 @bot.message_handler(commands=['reg'])
 def registration(message):
     bot.send_message(message.chat.id, 'Укажите свою фамилию: ')
     bot.register_next_step_handler(message, get_surname)
+
+@bot.message_handler(commands=['profile'])
+def check_profilee(message):
+    global telegram_id
+    telegram_id = message.from_user.id
+    result = check_profile(telegram_id)
+    name = result[2]
+    surname = result[1]
+    pat = result[3]
+    post = result[4]
+
+    print(result)
+    bot.send_message(message.chat.id, f"{smile[1]} Ваш профиль {smile[1]}\n\nФамилия: {surname}\nИмя: {name}\nОтчество: {pat}\nДолжность: {post}\n\n{smile[1]} Успеваемость {smile[1]}\n\nМодуль 1: Не пройден\nМодуль 2: Не пройден\nМодуль 3: Не пройден\nМодуль 4: Не пройден\nМодуль 5: Не пройден\nМодуль 6: Не пройден\nМодуль 7: Не пройден\n")
 
 
 def get_surname(message):
@@ -92,7 +112,14 @@ def callback(call):
             bot.edit_message_text("result", chat_id=call.message.chat.id, message_id=msg.message_id)
             bot.delete_message(call.message.chat.id, msg.message_id)
         elif call.data == "profile":
-            pass
+            result = check_profile(telegram_id)
+            name1 = result[2]
+            surname1 = result[1]
+            pat1 = result[3]
+            post1 = result[4]
+            print(result)
+            bot.send_message(call.message.chat.id,
+                             f"{smile[1]} Ваш профиль {smile[1]}\n\nФамилия: {surname1}\nИмя: {name1}\nОтчество: {pat1}\nДолжность: {post1}\n\n{smile[1]} Успеваемость {smile[1]}\n\nМодуль 1: Не пройден\nМодуль 2: Не пройден\nМодуль 3: Не пройден\nМодуль 4: Не пройден\nМодуль 5: Не пройден\nМодуль 6: Не пройден\nМодуль 7: Не пройден\n")
         elif call.data == "first_test":
             pass
 
